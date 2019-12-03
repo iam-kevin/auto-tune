@@ -1,0 +1,2 @@
+class BuildProcess(object):
+    pass
