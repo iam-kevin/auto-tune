@@ -10,7 +10,7 @@ MAJOR, MINOR, PATCH
 The version format may be subjected to change
 """
 
-_MAJOR, _MINOR, _PATCH, _LABEL = 0, 1, 0, 'dev'
+_MAJOR, _MINOR, _PATCH, _LABEL = 0, 1, 20, 'dev'
 
 
 VERSION = f"{_MAJOR}.{_MINOR}.{_PATCH}-{_LABEL}"

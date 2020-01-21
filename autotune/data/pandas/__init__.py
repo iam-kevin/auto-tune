@@ -1,8 +1,9 @@
-from autotune.explicit.data.data import Data
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
-import numpy as np
 import pandas as pd
+from overrides import overrides
+
+from autotune.data.data import Data
 
 _INSPECT_OUTPUT_FORMAT = ['jupyter', 'html']
 _DEFAULT_INSPECT_OPTS = dict(style={"full_width": True})
@@ -14,18 +15,17 @@ class PandasData(Data):
     Primarily: This is to load Kaggle/Zindi Styled contents"""
 
     def __init__(self, df: pd.DataFrame):
-        self.df: pd.DataFrame = df
+        super(PandasData, self).__init__(data=df, columns=df.columns)
 
     @property
     def columns(self) -> List:
         """Loads the columns of the DataFrame object"""
-        return self.df.columns
+        return self._d.columns
 
-    @property
-    def _num_columns(self) -> List:
-        """Loads the columns of the DataFrame object"""
-        return self.df.shape[1]
+    def shape(self) -> Tuple[int, int]:
+        return self._d.shape
 
+    @overrides
     def inspect(self, output_format='jupyter', **profiling_options):
         """Human inspection of data, using pandas-profiling
 
@@ -48,26 +48,28 @@ class PandasData(Data):
         prof_opts.update(profiling_options)
 
         if output_format == 'jupyter':
-            self.df.profile_report(**prof_opts)
+            self._d.profile_report(**prof_opts)
 
         elif output_format == 'html':
             if 'output_file' not in prof_opts:
                 raise RuntimeError(f"'output_format' set to 'html', but param 'output_file' is missing")
 
-            profile = self.df.profile_report(title='Pandas Profiling Report')
+            profile = self._d.profile_report(title='Pandas Profiling Report')
             profile.to_file(output_file="output.html")
             print(f"[INFO] Save profiling in \'{prof_opts['output_file']}.\'")
 
     def extra_str(self) -> Dict[str, str]:
         """Contains contents to show as outputs when printing the object"""
 
+        num_cols = self.shape[1]
+
         # Check the number of columns
-        if self._num_columns > 2:
+        if num_cols > 3:
             col_out = f"{self.columns[0]}, ..., {self.columns[-1]}"
         else:
             col_out = ", ".join(self.columns)
 
-        return {"columns": f"(count={len(self._num_columns)}, view=[{col_out}])"}
+        return {"columns": f"(count={num_cols}, view=[{col_out}])"}
 
     def __str__(self) -> str:
         """Prints a good looking output on `print(PandasData)`"""
@@ -76,4 +78,4 @@ class PandasData(Data):
         return f"PandasData({extra_output}\n)"
 
     def __repr__(self) -> str:
-        return self.df.__repr__()
+        return self._d.__repr__()

@@ -1,11 +1,8 @@
-from autotune.explicit.loaders.loader import Loader
-from typing import Dict, Any
-
 # Importing necessary packages for the loader
-import numpy as np
 import pandas as pd
 
-from autotune.explicit.data.pandas_data import PandasData
+from autotune.data import PandasData
+from autotune.loaders import Loader
 
 
 class PandasLoader(Loader):
