@@ -1,5 +1,6 @@
 # AutoTune [unstable.ver-1]
 
+[![Build Status](https://travis-ci.org/iam-kevin/auto-tune.svg?branch=master)](https://travis-ci.org/iam-kevin/auto-tune)
 
 **NOTE:**<br />
     - This *README* can be subjected to change at anytime. So don't be suprise if you come back tomorrow and you find that the documentation for this applciation has changed COMPLETELY<br />
