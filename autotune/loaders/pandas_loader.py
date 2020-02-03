@@ -1,8 +1,8 @@
 # Importing necessary packages for the loader
 import pandas as pd
 
-from autotune.data import PandasData
-from autotune.loaders import Loader
+from ..data.pandas import PandasData
+from ..loaders.loader import Loader
 
 
 class PandasLoader(Loader):
@@ -20,11 +20,13 @@ class PandasLoader(Loader):
         else:
             self.set_opts = {}
 
-    @classmethod
-    def load(cls, file_path: str, **kwargs) -> PandasData:
+    def load(self, file_path: str, **kwargs) -> PandasData:
         """Assumption, reading CSV files"""
         # TODO: Could add feature that select the type of
         #  reader depending on the file extension
         #  .csv -> read_csv, .xlsx -> read_excel ...
 
-        return PandasData(pd.read_csv(file_path, **kwargs))
+        # Update the kwargs for pandas
+        self.set_opts.update(kwargs)
+
+        return PandasData(pd.read_csv(file_path, **self.set_opts))

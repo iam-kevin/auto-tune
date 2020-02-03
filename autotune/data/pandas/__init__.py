@@ -1,15 +1,16 @@
-from typing import List, Dict, Tuple
+from typing import Dict
 
 import pandas as pd
 from overrides import overrides
 
+from autotune.data.components import AddableData
 from autotune.data.data import Data
 
 _INSPECT_OUTPUT_FORMAT = ['jupyter', 'html']
 _DEFAULT_INSPECT_OPTS = dict(style={"full_width": True})
 
 
-class PandasData(Data):
+class PandasData(Data[pd.DataFrame]):
     """Allows storing and manipulating pandas objects
 
     Primarily: This is to load Kaggle/Zindi Styled contents"""
@@ -17,13 +18,17 @@ class PandasData(Data):
     def __init__(self, df: pd.DataFrame):
         super(PandasData, self).__init__(data=df, columns=df.columns)
 
-    @property
-    def columns(self) -> List:
-        """Loads the columns of the DataFrame object"""
-        return self._d.columns
+    @overrides
+    def addition(self, other: AddableData) -> pd.IndexSlice:
+        """Adding should involve adding of pd.Series and pd.IndexSlice instead of
+        numpy objects
 
-    def shape(self) -> Tuple[int, int]:
-        return self._d.shape
+        """
+
+        # Add to reference
+
+        # Add to main data
+        pd.concat([self.data, self.other._d])
 
     @overrides
     def inspect(self, output_format='jupyter', **profiling_options):
@@ -78,4 +83,5 @@ class PandasData(Data):
         return f"PandasData({extra_output}\n)"
 
     def __repr__(self) -> str:
+        # TODO: Find a pretty way (pandas way) to print the contents of the data
         return self._d.__repr__()

@@ -1,11 +1,12 @@
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, Generic, TypeVar
+
+TData = TypeVar('TData')
 
 import numpy as np
-
 from autotune.data.components import AddableData
 
 
-class Data(object):
+class Data(Generic[TData]):
     """[Aim] Object that is to store the data that is presented from the loaders
 
     Features to be present:
@@ -19,16 +20,20 @@ class Data(object):
     """
 
     def __init__(self,
-                 data,
+                 data: TData,
                  columns: Iterable = None):
         # This is the base data type to work with
-        self._d = data
+        self._d: TData = data
 
         # Setting the columns for the application
         self._col = columns
 
         # To contain the references that are needed
         self.references: list = []
+
+    @property
+    def data(self) -> TData:
+        return self._d
 
     @property
     def columns(self) -> Iterable:
@@ -66,9 +71,13 @@ class Data(object):
 
         self.references.append(reference)
 
-    def add(self, data_to_add: AddableData):
-        """Can be overriden
+    def addition(self, other: AddableData):
+        # Add reference, then update the values (don't change the order)
+        self.add_references(other)
+        self._d = self.update_merged(other)
 
+    def add(self, data_to_add: AddableData):
+        """[Can be overriden by advanced users]
         Not the issue of adding reference... you should find  way around this
         """
 
@@ -90,9 +99,7 @@ class Data(object):
             raise ValueError(
                 f'Expected shape[-1] of added data to be {self.shape[-1]}, instead got {data_to_add.shape[-1]}')
 
-        # Add reference, then update the values (don't change the order)
-        self.add_references(data_to_add)
-        self._d = self.update_merged(data_to_add)
+        self.addition(data_to_add)
 
     def update_merged(self, other: AddableData) -> np.ndarray:
         """Creates the final form after merging the data"""

@@ -1,7 +1,7 @@
 import os
 
 # TODO: Make typing generic Loader<T>
-from autotune.data import Data
+from autotune.data.data import Data
 
 
 class Loader(object):

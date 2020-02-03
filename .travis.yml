@@ -1,0 +1,21 @@
+language: python
+python:
+  - '3.6'
+  - '3.7'     # default Python
+  - '3.8'
+install:
+  - pip install -r requirements.txt
+  - python setup.py install
+script:
+  # Script for running the test
+  # TODO: Populate with script to run tests
+  # This is temporary
+  - pytest _tests
+git:
+  quiet: true
+
+branches:
+  only:
+    - master
+    - tested
+  # Can add RegExp

@@ -2,8 +2,6 @@
 This data contains the components (that may heavily use `numpy`)
 that are used with the main Data
 
-The `Imputed` and `OverSampled`/`UnderSampled` should contain the references
-(rather than the values themselves... Of the values)
 """
 import numpy as np
 
