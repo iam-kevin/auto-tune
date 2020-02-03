@@ -1,10 +1,13 @@
 # AutoTune [unstable.ver-1]
 
+
+**NOTE:**<br />
+    - This *README* can be subjected to change at anytime. So don't be suprise if you come back tomorrow and you find that the documentation for this applciation has changed COMPLETELY<br />
+    - Support Checked for Python 3.6 and 3.7 only
+    
+
 AutoTune is a Machine Learning tool that is useful in designing machine learning models using a few lines of python code, and with it, create, train, and evaluate machine learning pipelines. 
 
-
-**NOTE:**
-    This *README* can be subjected to change at anytime. So don't be suprise if you come back tomorrow and you find that the documentation for this applciation has changed COMPLETELY
 
 ## Principles
 
